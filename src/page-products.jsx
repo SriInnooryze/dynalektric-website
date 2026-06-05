@@ -20,7 +20,7 @@ function PageProducts({ navigate, focusId }) {
   const group = PRODUCTS.find(p => p.id === activeGroup) || PRODUCTS[0];
   const activeSubCode = activeSubByGroup[group.id];
   const sub = group.subcategories.find(s => s.code === activeSubCode) || group.subcategories[0];
-  const subDetail = (window.SUBCAT_DETAIL || SUBCAT_DETAIL)[sub.code] || {};
+  const subDetail = (window.SUBCAT_DET AIL || SUBCAT_DETAIL)[sub.code] || {};
 
   React.useEffect(() => {
     if (focusId && focusId !== activeGroup && PRODUCTS.find(p => p.id === focusId)) {
@@ -134,7 +134,7 @@ function PageProducts({ navigate, focusId }) {
                   <img
                     src={PRODUCT_GROUP_IMAGES[group.id]}
                     alt={`${group.name} product group`}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
                   />
                 </div>
               </div>

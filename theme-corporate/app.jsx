@@ -156,8 +156,8 @@ function App() {
            <img 
               src="src/assets/logo.png"
               alt="Dynalektric logo"
-               style={{ 
-                        width: '70px',
+               style={{
+                        width: '96px',
                         height: 'auto',
                         objectFit: 'contain',
                         display: 'block'

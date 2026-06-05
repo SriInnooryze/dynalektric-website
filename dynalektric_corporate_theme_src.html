@@ -575,8 +575,9 @@ image-slot {
 .product-card-img { aspect-ratio: 4/3; }
 .product-card-img image-slot { width: 100%; height: 100%; }
 .product-card-body { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.product-card-body > p { flex: 1; min-height: 0; }
 .product-card-foot {
-  margin-top: auto;
+  margin-top: 0;
   display: flex; justify-content: space-between; align-items: center;
   padding-top: 24px;
   border-top: 1px solid var(--rule-soft);

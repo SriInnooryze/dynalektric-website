@@ -42,8 +42,8 @@ function PageRnd({ navigate }) {
       <section className="container">
         <div className="rnd-hero reveal">
           <div>
-            <div className="mono" style={{ color: 'var(--accent)', marginBottom: 24 }}>03 / Innovation and R&amp;D Portfolio</div>
-            <h1>Innovation and R&amp;D portfolio for custom power solutions.</h1>
+            <div className="mono" style={{ color: 'var(--accent)', marginBottom: 16, fontWeight: 600 }}>04 / Innovation Portfolio</div>
+            <h1>Innovation Portfolio for custom power solutions.</h1>
           </div>
           <div>
             <p className="lead">

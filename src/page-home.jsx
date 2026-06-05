@@ -261,13 +261,13 @@ function PageHome({ navigate, tweaks }) {
         <div className="container">
           <div className="rnd-teaser">
             <div className="rnd-teaser-copy">
-              <div className="mono" style={{ color: 'var(--accent)', marginBottom: 24 }}>06 / Engineering and NPD</div>
+              <div className="mono" style={{ color: 'var(--accent)', marginBottom: 24 }}>06 / Innovation Portfolio</div>
               <h2>Custom requirements engineered in-house.</h2>
               <p className="lead" style={{ marginTop: 24 }}>
                 Our engineering and new product development teams take a customer specification through feasibility, design, prototyping, validation and pilot production. One team, one process.
               </p>
               <button className="btn btn-ghost" style={{ marginTop: 32 }} onClick={() => navigate('rnd')}>
-                View engineering capability →
+                View Innovation Portfolio →
               </button>
             </div>
             <div className="rnd-teaser-visual">

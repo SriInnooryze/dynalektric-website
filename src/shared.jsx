@@ -702,7 +702,13 @@ function Footer({ navigate }) {
       <div className="container">
         <div className="footer-grid">
           <div className="footer-col">
-            <div className="footer-brand">Dynalektric</div>
+            <div className="footer-brand">
+              <img
+                src="src/assets/footerlogo.png"
+                alt="Dynalektric"
+                style={{     height: 70,width: 'auto',display: 'block' }}
+              />
+            </div>
             <p className="footer-tag">Magnetics, control panels, power electronics and cross-segment components. Engineered in India for industrial, power, railway, renewable and material handling applications worldwide.</p>
           </div>
           <div className="footer-col">
