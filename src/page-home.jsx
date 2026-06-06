@@ -7,118 +7,210 @@ const HOME_PRODUCT_IMAGES = {
   'cross-segment':     'src/assets/cross-segment.jpg',
 };
 
+const HOME_INDUSTRY_CARDS = [
+  { id: 'railways',   name: 'Railway & Traction',              desc: 'Power and control systems for rolling stock OEMs and railway infrastructure projects.',       img: 'src/assets/facility-teaser.jpg',   bg: '#0d1929' },
+  { id: 'renewables', name: 'Renewable Energy',                desc: 'Electrical systems supporting solar, wind and energy storage applications.',                   img: 'src/assets/winding-floor.jpg',     bg: '#0d2217' },
+  { id: 'powergrid',  name: 'Power & Utilities',               desc: 'Transformers, reactors and control systems for utilities and EPC contractors.',                 img: 'src/assets/test-bay.jpg',          bg: '#101828' },
+  { id: 'heavy',      name: 'Heavy Industries',                desc: 'Power and control solutions for steel, cement, mining and process industries.',                 img: 'src/assets/facility-wide.jpg',     bg: '#201408' },
+  { id: 'mhe',        name: 'Material Handling & Warehousing', desc: 'Electrical systems supporting forklifts, AGVs and warehouse automation.',                      img: 'src/assets/power-electronics.jpg', bg: '#0d1e2e' },
+  { id: 'datacenter', name: 'Data Centers',                    desc: 'Power conversion and backup infrastructure for mission-critical facilities.',                   img: 'src/assets/test-bay2.jpg',         bg: '#080f1c' },
+];
+
+const HOME_CAPABILITIES = [
+  { id: 'magnetics',         name: 'Magnetics',                 desc: 'Transformers, reactors and magnetic components for industrial, utility, railway and renewable installations. Engineered in-house from winding to type testing.' },
+  { id: 'control-panels',    name: 'Control Panel Assemblies',  desc: 'Engineered control and power distribution panels for rolling stock and industrial installations, built and tested to IEC 61439.' },
+  { id: 'power-electronics', name: 'Power Electronics Systems', desc: 'Industrial battery chargers and power conversion systems for fleet, utility and special applications.' },
+  { id: 'cross-segment',     name: 'Cross-Segment Solutions',   desc: 'Components and sub-systems engineered for OEM integration across rolling stock, industrial and power applications.' },
+];
+
+function useVisibleCount() {
+  const [vc, setVc] = React.useState(3);
+  React.useEffect(() => {
+    const update = () => {
+      if (window.innerWidth <= 600) setVc(1);
+      else if (window.innerWidth <= 900) setVc(2);
+      else setVc(3);
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+  return vc;
+}
+
+const SLIDE_GAP = 24;
+
+function IndustryCarousel({ navigate }) {
+  const [idx, setIdx] = React.useState(0);
+  const vc = useVisibleCount();
+  const viewportRef = React.useRef(null);
+  const [vpWidth, setVpWidth] = React.useState(0);
+
+  const count = HOME_INDUSTRY_CARDS.length;
+  const max = count - vc;
+  const safeIdx = Math.min(idx, max);
+
+  const slideWidth = vpWidth > 0 ? (vpWidth + SLIDE_GAP) / vc : 0;
+  const offset = Math.min(safeIdx * slideWidth, max * slideWidth);
+
+  const measure = React.useCallback(() => {
+    if (viewportRef.current) setVpWidth(viewportRef.current.clientWidth);
+  }, []);
+
+  React.useLayoutEffect(() => { measure(); }, [vc]);
+  React.useEffect(() => {
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [measure]);
+
+  const prev = () => setIdx(i => Math.max(0, i - 1));
+  const next = () => setIdx(i => Math.min(max, i + 1));
+
+  return (
+    <div>
+      <div ref={viewportRef} style={{ overflow: 'hidden' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: `repeat(${count}, calc((100% - ${(vc - 1) * SLIDE_GAP}px) / ${vc}))`,
+          columnGap: `${SLIDE_GAP}px`,
+          transition: slideWidth > 0 ? 'transform 450ms cubic-bezier(.2,.8,.2,1)' : 'none',
+          transform: `translateX(-${offset}px)`,
+        }}>
+          {HOME_INDUSTRY_CARDS.map((ind) => (
+            <button
+              key={ind.id}
+              className="ind-card"
+              style={{ background: ind.bg }}
+              onClick={() => navigate('industries', ind.id)}
+            >
+              <div className="ind-card-bg">
+                <img src={ind.img} alt="" aria-hidden="true" />
+              </div>
+              <div className="ind-card-overlay" />
+              <div className="ind-card-body">
+                <h3>{ind.name}</h3>
+                <p>{ind.desc}</p>
+                <span className="mono ind-card-cta">Learn More →</span>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="ind-carousel-nav">
+        <span className="mono" style={{ color: 'var(--ink-muted)', fontSize: 10 }}>
+          {safeIdx + 1}&thinsp;—&thinsp;{Math.min(safeIdx + vc, count)} of {count} industries
+        </span>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button
+            className="ind-nav-btn"
+            onClick={prev}
+            disabled={safeIdx === 0}
+            aria-label="Previous industry"
+          >←</button>
+          <button
+            className="ind-nav-btn ind-nav-btn-fwd"
+            onClick={next}
+            disabled={safeIdx >= max}
+            aria-label="Next industry"
+          >→</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function PageHome({ navigate, tweaks }) {
   useReveal();
-  const headline = HERO_HEADLINES[tweaks.heroVariant || 0];
 
   return (
     <main className="page-enter">
-      {/* HERO */}
-      <section className="hero" style={{ paddingTop: 80, paddingBottom: 120 }}>
-        <div className="container">
-          {/* Tech metadata strip */}
-          <div className="hero-meta">
-            <span className="mono">Index 01 / 06</span>
-            <span className="mono">Power · Motion · Safety</span>
-            <span className="mono">Established 1980 · India</span>
-            <span className="mono">ISO 9001 · IEC · IS</span>
-          </div>
-          <hr className="rule-soft" style={{ margin: '24px 0 56px' }} />
 
-          <div className="hero-grid">
-            <div className="hero-copy">
-              <div className="mono" style={{ color: 'var(--accent)', marginBottom: 24 }}>{headline.pre}</div>
-              <h1>{headline.main}</h1>
-              <p className="lead" style={{ marginTop: 32, maxWidth: '56ch' }}>{headline.sub}</p>
-              <div style={{ display: 'flex', gap: 16, marginTop: 40, flexWrap: 'wrap' }}>
-                <button className="btn btn-primary" onClick={() => navigate('contact')}>
-                  Submit RFQ <span className="arrow">→</span>
-                </button>
-                <button className="btn btn-secondary" onClick={() => navigate('products')}>
-                  Browse products
-                </button>
-              </div>
-              <div className="hero-quickfacts">
-                <div>
-                  <div className="mono">Buyers we work with</div>
-                  <div className="val">OEMs, EPCs, utilities, railways, automation</div>
-                </div>
-                <div>
-                  <div className="mono">Export markets</div>
-                  <div className="val">Europe, Middle East, Asia</div>
-                </div>
-                <div>
-                  <div className="mono">Typical RFQ turnaround</div>
-                  <div className="val">One business day</div>
-                </div>
-              </div>
-            </div>
+      {/* SECTION 1 — CORPORATE HERO */}
+      <section className="corp-hero">
+        <div className="corp-hero-media">
+          <img src="src/assets/facility-wide.jpg" alt="" aria-hidden="true" />
+        </div>
+        <div className="corp-hero-overlay" />
 
-            <div className="hero-visual">
-              <div className="hero-visual-frame">
-                <img
-                  src="src/assets/facility-teaser.jpg"
-                  alt="Dynalektric manufacturing facility"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                />
-                {/*<div className="hero-visual-badge">
-                  {/* <span className="mono" style={{ color: 'var(--ink-muted)' }}></span>
-                  <span className="mono-num" style={{ fontSize: 11, color: 'var(--ink)' }}></span>
-                </div>*/}
-                <div className="hero-visual-corner top-left">+</div>
-                <div className="hero-visual-corner top-right">+</div>
-                <div className="hero-visual-corner bottom-left">+</div>
-                <div className="hero-visual-corner bottom-right">+</div>
-              </div>
+        <div className="container corp-hero-inner">
+          <div className="corp-hero-top">
+            <div className="corp-video-badge">
+              <span className="mono">Corporate Manufacturing Video Coming Soon</span>
             </div>
           </div>
 
-          {/* Hero footer ticker */}
-          <hr className="rule-soft" style={{ margin: '64px 0 24px' }} />
-          <div className="hero-ticker">
-            <div className="hero-ticker-item"><span className="mono num">01</span><span>Magnetics</span></div>
-            <div className="hero-ticker-item"><span className="mono num">02</span><span>Control Panel Assemblies</span></div>
-            <div className="hero-ticker-item"><span className="mono num">03</span><span>Power Electronics Systems</span></div>
-            <div className="hero-ticker-item"><span className="mono num">04</span><span>Cross-Segment Solutions</span></div>
+          <div className="corp-hero-copy">
+            <h1>Engineering Critical Electrical Systems for Modern Industry</h1>
+            <p>
+              Designing, manufacturing and testing electrical systems for transportation, energy and industrial infrastructure.
+            </p>
+            <button className="btn corp-hero-btn" onClick={() => navigate('about')}>
+              Explore Dynalektric <span className="arrow">→</span>
+            </button>
           </div>
         </div>
       </section>
 
-      {/* PRODUCTS OVERVIEW */}
+      {/* STATS STRIP */}
+      <section className="corp-stats-strip reveal">
+        <div className="container">
+          <div className="corp-stats-grid">
+            {STATS.map((s, i) => (
+              <div key={i} className="corp-stats-item">
+                <div className="corp-stats-val">{s.value}</div>
+                <div className="mono corp-stats-sub">{s.sub}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 2 — INDUSTRIES */}
       <section className="section reveal">
         <div className="container">
           <div className="section-head">
-            <div className="eyebrow"><span className="dot" /><span className="mono">02 / Products and Solutions</span></div>
+            <div className="eyebrow"><span className="dot" /><span className="mono">01 / Industries served</span></div>
             <div>
-              <h2>Four product groups, designed to specification.</h2>
-              <p className="lead" style={{ marginTop: 16 }}>Magnetics, control panel assemblies, power electronics systems and cross-segment solutions. Designed, manufactured and tested under one roof.</p>
+              <h2>Powering Critical Industries</h2>
+              <p style={{ marginTop: 16, fontSize: 15, color: 'var(--ink-soft)', maxWidth: '60ch' }}>
+                Electrical systems engineered for transportation, energy, utility and industrial infrastructure applications.
+              </p>
+            </div>
+          </div>
+          <IndustryCarousel navigate={navigate} />
+        </div>
+      </section>
+
+      {/* SECTION 3 — MANUFACTURING CAPABILITIES */}
+      <section className="section reveal" style={{ background: 'var(--bg-alt)' }}>
+        <div className="container">
+          <div className="section-head">
+            <div className="eyebrow"><span className="dot" /><span className="mono">02 / Manufacturing capabilities</span></div>
+            <div>
+              <h2>Integrated Manufacturing Capabilities</h2>
+              <p style={{ marginTop: 16, fontSize: 15, color: 'var(--ink-soft)', maxWidth: '60ch' }}>
+                From magnetic components and control systems to power electronics and custom-engineered assemblies, Dynalektric delivers end-to-end electrical manufacturing capabilities under one roof.
+              </p>
             </div>
           </div>
 
-          <div className="product-grid product-grid-4">
-            {PRODUCTS.map((p, i) => (
+          <div className="home-cap-grid">
+            {HOME_CAPABILITIES.map((cap) => (
               <button
-                key={p.id}
-                className="product-card card reveal"
-                onClick={() => navigate('products', p.id)}
-                style={{ transitionDelay: `${i * 40}ms` }}
+                key={cap.id}
+                className="home-cap-card reveal"
+                onClick={() => navigate('products', cap.id)}
               >
-                <div className="product-card-num mono">{p.num}</div>
-                <div className="product-card-img">
-                  <img
-                    src={HOME_PRODUCT_IMAGES[p.id]}
-                    alt={`${p.name} product group`}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                  />
+                <div className="home-cap-img">
+                  <img src={HOME_PRODUCT_IMAGES[cap.id]} alt={cap.name} />
+                  <div className="home-cap-img-overlay" />
                 </div>
-                <div className="product-card-body">
-                  <h3>{p.name}</h3>
-                  <p style={{ marginTop: 8, fontSize: 14 }}>{p.tagline}</p>
-                  <div className="product-card-subs mono">
-                    {p.subcategories.length} sub-categories
-                  </div>
-                  <div className="product-card-foot">
-                    <span className="mono">View group</span>
+                <div className="home-cap-body">
+                  <h3>{cap.name}</h3>
+                  <p>{cap.desc}</p>
+                  <div className="home-cap-foot">
+                    <span className="mono">Learn More</span>
                     <span className="arrow">→</span>
                   </div>
                 </div>
@@ -127,141 +219,13 @@ function PageHome({ navigate, tweaks }) {
           </div>
         </div>
       </section>
-      {/* CORPORATE VIDEO SECTION */}
-       <section className="section reveal">
-        <div className="container">
-    
-         <div className="section-head">
-          <div className="eyebrow">
-           <span className="dot" />
-           <span className="mono">03 / Manufacturing Overview</span>
-         </div>
 
-         <div>
-          <h2>Inside Dynalektric Manufacturing</h2>
-
-          <p
-          style={{
-            marginTop: 16,
-            fontSize: 15,
-            color: 'var(--ink-soft)',
-            maxWidth: '60ch'
-          }}
-        >
-          A quick overview of our engineering, manufacturing,
-          testing and assembly capabilities across transformers,
-          control panels and power electronics systems.
-        </p>
-      </div>
-    </div>
-
-    <div
-      style={{
-        marginTop: 40,
-        borderRadius: 24,
-        overflow: 'hidden',
-        border: '1px solid var(--rule-soft)',
-        background: '#000'
-      }}
-    >
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        controls
-        onError={(e) => { e.stopPropagation(); }}
-        style={{
-          width: '100%',
-          display: 'block',
-          aspectRatio: '16/6.5',
-          objectFit: 'cover'
-        }}
-      >
-        <source
-          src="uploads/dynalektric-video.mp4"
-          type="video/mp4"
-          onError={(e) => { e.stopPropagation(); }}
-        />
-      </video>
-    </div>
-
-  </div>
-</section>
-
-      {/* INDUSTRIES STRIP */}
-      <section className="section reveal" style={{ background: 'var(--ink)', color: 'var(--bg)', margin: '0' }}>
-        <div className="container">
-          <div className="section-head" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
-            <div className="eyebrow"><span className="dot" /><span className="mono" style={{ color: 'rgba(246,244,239,0.6)' }}>04 / Industries served</span></div>
-            <div>
-              <h2 style={{ color: 'var(--bg)' }}>Built for industrial buyers and project teams.</h2>
-              <p style={{ marginTop: 16, fontSize: 15, color: 'rgba(246,244,239,0.7)', maxWidth: '60ch' }}>
-                Five sectors where Dynalektric supplies OEMs, EPC contractors, utilities and procurement teams.
-              </p>
-            </div>
-          </div>
-          <div className="industry-strip industry-strip-6">
-            {INDUSTRIES.map((ind, i) => (
-              <button key={ind.id} className="industry-strip-item reveal" onClick={() => navigate('industries', ind.id)} style={{ transitionDelay: `${i * 60}ms` }}>
-                <div className="mono num" style={{ color: 'var(--accent)' }}>{ind.num}</div>
-                <h3 style={{ color: 'var(--bg)' }}>{ind.name}</h3>
-                <p style={{ color: 'rgba(246,244,239,0.65)', fontSize: 14, marginTop: 12 }}>{ind.short}</p>
-                <span className="mono" style={{ color: 'rgba(246,244,239,0.5)', marginTop: 24, display: 'block' }}>View applications →</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SUPPLIER QUALIFICATION */}
+      {/* SECTION 4 — INNOVATION PORTFOLIO */}
       <section className="section reveal">
-        <div className="container">
-          <div className="section-head">
-            <div className="eyebrow"><span className="dot" /><span className="mono">05 / Supplier qualification</span></div>
-            <div>
-              <h2>Built for procurement and quality teams.</h2>
-              <p style={{ marginTop: 16, fontSize: 15, color: 'var(--ink-soft)', maxWidth: '60ch' }}>
-                What we provide on every project: standards, documentation, in-house testing and export readiness. Useful for procurement, supplier quality and project engineering.
-              </p>
-            </div>
-          </div>
-          <div className="why-grid">
-            {QUALIFICATION.map(q => (
-              <div className="why-item" key={q.num}>
-                <div className="mono num">{q.num}</div>
-                <h3>{q.title}</h3>
-                <p>{q.body}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="qual-cta">
-            <div>
-              <div className="mono" style={{ color: 'var(--accent)', fontWeight: 600 }}>Vendor registration</div>
-              <h3 style={{ marginTop: 8 }}>Request our supplier qualification pack.</h3>
-              <p style={{ marginTop: 8, fontSize: 14, color: 'var(--ink-soft)', maxWidth: '60ch' }}>
-                Company profile, ISO certificates, sample test reports, capability statement and reference list. Available on email request for procurement and SCM teams.
-              </p>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'flex-end' }}>
-              <button className="btn btn-primary" onClick={() => navigate('contact')}>
-                Request pack <span className="arrow">→</span>
-              </button>
-              <button className="btn btn-ghost" onClick={() => navigate('export')}>
-                View export support →
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* R&D TEASER */}
-      <section className="section reveal" style={{ background: 'var(--bg-alt)' }}>
         <div className="container">
           <div className="rnd-teaser">
             <div className="rnd-teaser-copy">
-              <div className="mono" style={{ color: 'var(--accent)', marginBottom: 24 }}>06 / Innovation Portfolio</div>
+              <div className="mono" style={{ color: 'var(--accent)', marginBottom: 24 }}>03 / Innovation Portfolio</div>
               <h2>Custom requirements engineered in-house.</h2>
               <p className="lead" style={{ marginTop: 24 }}>
                 Our engineering and new product development teams take a customer specification through feasibility, design, prototyping, validation and pilot production. One team, one process.
@@ -281,79 +245,13 @@ function PageHome({ navigate, tweaks }) {
         </div>
       </section>
 
-      {/* TRUST / CERTS / STATS */}
+      {/* SECTION 5 — CASE STUDIES */}
       <section className="section reveal">
         <div className="container">
           <div className="section-head">
-            <div className="eyebrow"><span className="dot" /><span className="mono">07 / Standards and testing</span></div>
+            <div className="eyebrow"><span className="dot" /><span className="mono">04 / Application references</span></div>
             <div>
-              <h2>Type-tested designs, full documentation, traceable processes.</h2>
-              <p style={{ marginTop: 16, fontSize: 15, color: 'var(--ink-soft)' }}>
-                Every product ships with routine and type test reports, QAP documentation and material traceability. Designs validated against IEC, IS and customer specifications.
-              </p>
-            </div>
-          </div>
-
-          <div className="standards-grid">
-            <div>
-              <div className="mono" style={{ marginBottom: 24, color: 'var(--accent)', fontWeight: 600 }}>Certifications and standards</div>
-              <div className="cert-row">
-                {CERTIFICATIONS.map(c => (
-                  <div className="cert-item" key={c.code}>
-                    <div className="cert-code">{c.code}</div>
-                    <div className="cert-label mono">{c.label}</div>
-                  </div>
-                ))}
-              </div>
-              <div style={{ marginTop: 16 }} className="mono">Certificate copies available on request</div>
-            </div>
-            <div className="qa-card">
-              <div className="mono" style={{ marginBottom: 16, color: 'var(--accent)', fontWeight: 600 }}>Quality process</div>
-              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 12 }}>
-                <li style={{ fontSize: 13, paddingBottom: 12, borderBottom: '1px solid var(--rule-soft)' }}>
-                  <div style={{ fontWeight: 500, marginBottom: 4 }}>Routine testing</div>
-                  <div style={{ color: 'var(--ink-soft)' }}>100% electrical validation on every unit</div>
-                </li>
-                <li style={{ fontSize: 13, paddingBottom: 12, borderBottom: '1px solid var(--rule-soft)' }}>
-                  <div style={{ fontWeight: 500, marginBottom: 4 }}>Type testing</div>
-                  <div style={{ color: 'var(--ink-soft)' }}>On-site labs plus accredited externals</div>
-                </li>
-                <li style={{ fontSize: 13, paddingBottom: 12, borderBottom: '1px solid var(--rule-soft)' }}>
-                  <div style={{ fontWeight: 500, marginBottom: 4 }}>FAT support</div>
-                  <div style={{ color: 'var(--ink-soft)' }}>Customer factory acceptance testing</div>
-                </li>
-                <li style={{ fontSize: 13 }}>
-                  <div style={{ fontWeight: 500, marginBottom: 4 }}>Documentation</div>
-                  <div style={{ color: 'var(--ink-soft)' }}>QAP, GA drawings, test reports, BoM</div>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="stats-row" style={{ marginTop: 56 }}>
-            {STATS.map((s, i) => (
-              <div className="stats-item reveal" key={i} style={{ transitionDelay: `${i * 80}ms`, textAlign: 'center' }}>
-                <div className="big-num">
-                  {s.value.includes('+')
-                    ? <><Counter to={parseInt(s.value)} />+</>
-                    : s.value
-                  }
-                </div>
-                <div className="mono" style={{ marginTop: 12, color: 'var(--ink-muted)' }}>{s.sub}</div>
-                <div style={{ fontSize: 14, color: 'var(--ink-soft)', marginTop: 8 }}>{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ANONYMOUS CASE STUDIES */}
-      <section className="section reveal">
-        <div className="container">
-          <div className="section-head">
-            <div className="eyebrow"><span className="dot" /><span className="mono">08 / Case style references</span></div>
-            <div>
-              <h2>Buyer-grade examples, kept anonymous.</h2>
+              <h2>Proven across sectors.</h2>
               <p style={{ marginTop: 16, fontSize: 15, color: 'var(--ink-soft)' }}>
                 Indicative application references across rail, renewables, utilities, automation, material handling and data centres. Project names are not shown. Detailed references available under NDA on request.
               </p>
@@ -363,23 +261,24 @@ function PageHome({ navigate, tweaks }) {
         </div>
       </section>
 
-      {/* RFQ STRIP */}
-      <section className="section-tight reveal">
-        <div className="container">
-          <div className="brochure-strip">
-            <div>
-              <div className="mono" style={{ color: 'var(--accent)', fontWeight: 600 }}>Technical resources</div>
-              <h3 style={{ marginTop: 12 }}>Capability statement and product datasheets</h3>
-              <p style={{ marginTop: 10, fontSize: 14, lineHeight: 1.6, color: 'var(--ink-soft)' }}>Send your application and ratings. We respond with relevant datasheets and a brief engineering view within one business day.</p>
-            </div>
-            <button className="btn btn-primary" onClick={() => navigate('contact')}>
-              Request datasheets <span className="arrow">→</span>
+      {/* SECTION 6 — FINAL CTA */}
+      <section className="home-final-cta reveal">
+        <div className="container home-final-cta-inner">
+          <h2>Let's Discuss Your Project Requirements</h2>
+          <p>
+            Share your application, ratings, environment and timeline. Our engineering team will respond within one business day.
+          </p>
+          <div className="home-final-cta-btns">
+            <button className="btn home-btn-contact" onClick={() => navigate('contact')}>
+              Contact Us <span className="arrow">→</span>
+            </button>
+            <button className="btn home-btn-profile" onClick={() => navigate('contact')}>
+              Download Corporate Profile
             </button>
           </div>
         </div>
       </section>
 
-      <FinalCTA navigate={navigate} />
       <Footer navigate={navigate} />
     </main>
   );
