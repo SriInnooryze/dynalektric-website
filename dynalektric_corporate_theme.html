@@ -33,7 +33,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Roboto+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap">
 
   <style>/* ============================================================
    Dynalektric — Editorial Industrial Design System
@@ -63,8 +63,8 @@
 
   /* Typography */
   --font-display: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
-  --font-body: 'Source Sans Pro', 'Source Sans 3', 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: 'Roboto Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-body: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
 
   /* Density */
   --section-y: 120px;
@@ -2553,18 +2553,20 @@ img, video, svg, image-slot { max-width: 100%; }
   .form-row select:focus,
   .form-row textarea:focus { border-bottom-color: var(--brand-bright); }
 
-  /* Mono labels a touch tighter for Roboto Mono */
+  /* Mono labels */
   .mono { letter-spacing: 0.06em; }
   /* Desktop nav sizing — visible at >=1101 px */
   @media (min-width: 1101px) {
-    .topbar-nav { gap: 0; }
-    .nav-link { --_np: 8px; font-size: 12px; letter-spacing: 0; }
+    .topbar-nav { gap: 4px; }
+    .nav-link { --_np: 10px; font-size: 13px; letter-spacing: 0.01em; font-weight: 500; }
   }
   @media (min-width: 1280px) {
-    .nav-link { --_np: 11px; font-size: 13px; letter-spacing: -0.005em; }
+    .topbar-nav { gap: 8px; }
+    .nav-link { --_np: 14px; font-size: 14px; letter-spacing: 0; }
   }
   @media (min-width: 1440px) {
-    .nav-link { --_np: 14px; }
+    .topbar-nav { gap: 12px; }
+    .nav-link { --_np: 16px; }
   }
   /* Mobile drawer — suppress underline */
   .mobile-drawer .nav-link::after { display: none; }
@@ -2863,99 +2865,141 @@ img, video, svg, image-slot { max-width: 100%; }
 }
 .ind-nav-btn:disabled { opacity: 0.28; cursor: default; }
 
-/* Capability grid 2x2 */
-.home-cap-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2px;
-  background: var(--rule-soft);
-  border: 1px solid var(--rule-soft);
+/* ── Capability showcase (interactive) ── */
+.cap-showcase { margin-top: 64px; }
+.cap-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--rule-soft);
 }
-.home-cap-card {
-  background: var(--bg-card);
-  border: 0;
-  cursor: pointer;
-  text-align: left;
+.cap-tab {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  transition: box-shadow 250ms, transform 250ms;
+  gap: 5px;
+  padding: 20px 24px 18px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 200ms, background 200ms;
   font: inherit;
   color: inherit;
+}
+.cap-tab:hover:not(.cap-tab--active) { background: rgba(0,42,82,0.04); }
+.cap-tab--active { border-bottom-color: var(--accent); }
+.cap-tab-num {
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.cap-tab--active .cap-tab-num { color: var(--accent); }
+.cap-tab-name {
+  font-family: var(--font-display);
+  font-size: clamp(11px, 0.95vw, 13px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: var(--ink-soft);
+}
+.cap-tab--active .cap-tab-name { color: var(--ink); }
+.cap-panel {
+  display: flex;
+  min-height: 500px;
+  transition: opacity 200ms ease;
+}
+.cap-panel--fade { opacity: 0; }
+.cap-panel-text {
+  flex: 0 0 42%;
+  padding: 60px 56px 60px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.cap-panel-sub {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 18px;
+}
+.cap-panel-title {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.2vw, 34px);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  color: var(--ink);
+  margin: 0 0 18px;
+}
+.cap-panel-desc {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 44ch;
+  margin: 0 0 28px;
+}
+.cap-panel-tags {
+  list-style: none;
   padding: 0;
-  border-radius: 0;
+  margin: 0 0 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
 }
-.home-cap-card:hover {
-  box-shadow: var(--shadow-card-hover);
-  transform: translateY(-2px);
-  z-index: 1;
-  position: relative;
+.cap-panel-tag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
 }
-.home-cap-img {
+.cap-panel-tag::before {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+.cap-panel-img {
+  flex: 1;
   position: relative;
-  aspect-ratio: 16/9;
   overflow: hidden;
 }
-.home-cap-img img {
+.cap-panel-img img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 450ms cubic-bezier(.2,.8,.2,1);
-}
-.home-cap-card:hover .home-cap-img img { transform: scale(1.04); }
-.home-cap-img-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,42,82,0.15);
-  transition: background 300ms;
-}
-.home-cap-card:hover .home-cap-img-overlay { background: rgba(0,42,82,0.05); }
-.home-cap-body {
-  padding: 32px 36px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-.home-cap-body h3 {
-  font-size: clamp(18px, 1.6vw, 24px);
-  letter-spacing: -0.01em;
-  margin-bottom: 12px;
-  color: var(--ink);
-}
-.home-cap-body p {
-  font-size: 14px;
-  line-height: 1.7;
-  color: var(--ink-soft);
-  flex: 1;
-}
-.home-cap-foot {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 24px;
-  padding-top: 18px;
-  border-top: 1px solid var(--rule-soft);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-muted);
-}
-.home-cap-card:hover .home-cap-foot { color: var(--accent); }
-.home-cap-card:hover .home-cap-foot .arrow {
-  transform: translateX(4px);
-  transition: transform 200ms;
 }
 @media (max-width: 900px) {
-  .home-cap-grid { grid-template-columns: 1fr; }
-  .home-cap-body { padding: 24px 28px; }
+  .cap-tabs { flex-wrap: wrap; }
+  .cap-tab { flex: 0 0 50%; }
+  .cap-panel { flex-direction: column; min-height: auto; }
+  .cap-panel-text { flex: none; padding: 40px 0 32px; }
+  .cap-panel-img { flex: none; height: 56vw; min-height: 260px; }
+}
+@media (max-width: 600px) {
+  .cap-tab { flex: 0 0 100%; padding: 14px 16px 12px; }
+  .cap-tab-name { font-size: 13px; }
+  .cap-panel-title { font-size: 20px; }
+  .cap-panel-desc { font-size: 14px; }
+  .cap-showcase { margin-top: 48px; }
 }
 
 /* Final CTA dark section */
 .home-final-cta {
   background: var(--accent-2);
-  padding: calc(var(--section-y) * 1.2) 0;
+  padding: 120px 0;
 }
 .home-final-cta-inner {
   text-align: center;
@@ -3001,6 +3045,132 @@ img, video, svg, image-slot { max-width: 100%; }
 .home-btn-profile:hover {
   background: rgba(255,255,255,0.1);
   border-color: rgba(255,255,255,0.6);
+}
+
+/* ── Engineering Solutions In Action ── */
+.cred-section { padding-bottom: 160px; }
+.cred-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 64px;
+}
+.cred-row {
+  display: flex;
+  gap: 4px;
+  height: 56vh;
+  min-height: 420px;
+  max-height: 620px;
+}
+.cred-card {
+  position: relative;
+  overflow: hidden;
+  flex: 2;
+}
+.cred-card--wide { flex: 3; }
+.cred-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 700ms cubic-bezier(.25,.46,.45,.94);
+}
+.cred-card:hover img { transform: scale(1.06); }
+.cred-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,10,30,0.94) 0%, rgba(0,10,30,0.44) 48%, rgba(0,10,30,0.10) 100%);
+  transition: background 500ms;
+}
+.cred-card:hover .cred-overlay {
+  background: linear-gradient(to top, rgba(0,10,30,0.90) 0%, rgba(0,10,30,0.58) 58%, rgba(0,10,30,0.18) 100%);
+}
+.cred-body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 28px 28px 32px;
+  z-index: 2;
+}
+.cred-tag {
+  display: block;
+  color: var(--brand-bright);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.cred-body h3 {
+  color: #ffffff;
+  font-size: clamp(16px, 1.6vw, 23px);
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0 0 8px;
+}
+.cred-desc {
+  color: rgba(255,255,255,0.70);
+  font-size: 12px;
+  line-height: 1.55;
+  max-width: 42ch;
+  margin: 0;
+}
+.cred-insights {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.13);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cred-insight {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+.cred-insight-k {
+  flex: 0 0 62px;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand-bright);
+  font-family: var(--font-mono);
+}
+.cred-insight-v {
+  font-size: 11px;
+  color: rgba(255,255,255,0.68);
+  line-height: 1.4;
+}
+@media (hover: hover) {
+  .cred-insights {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 380ms ease 60ms, transform 380ms ease 60ms;
+  }
+  .cred-card:hover .cred-insights {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (max-width: 900px) {
+  .cred-row { flex-direction: column; height: auto; }
+  .cred-card, .cred-card--wide { flex: none; height: 56vw; min-height: 280px; max-height: 460px; }
+  .cred-insights { opacity: 1; transform: none; }
+}
+@media (max-width: 600px) {
+  .cred-row { gap: 3px; }
+  .cred-grid { gap: 3px; margin-top: 48px; }
+  .cred-card, .cred-card--wide { height: 80vw; min-height: 240px; }
+  .cred-body { padding: 20px 18px 24px; }
+  .cred-body h3 { font-size: 15px; }
+  .cred-insight-k { flex: 0 0 52px; font-size: 7px; }
+  .cred-insight-v { font-size: 10px; }
 }
 </style>
 </head>
@@ -5023,13 +5193,6 @@ Object.assign(window, {
   <script type="text/babel">
 /* page-home.jsx */
 
-const HOME_PRODUCT_IMAGES = {
-  'magnetics':         'src/assets/magnetics.jpg',
-  'control-panels':    'src/assets/control-panel.jpg',
-  'power-electronics': 'src/assets/power-electronics.jpg',
-  'cross-segment':     'src/assets/cross-segment.jpg',
-};
-
 const HOME_INDUSTRY_CARDS = [
   { id: 'railways',   name: 'Railway & Traction',              desc: 'Power and control systems for rolling stock OEMs and railway infrastructure projects.',       img: 'src/assets/facility-teaser.jpg',   bg: '#001529' },
   { id: 'renewables', name: 'Renewable Energy',                desc: 'Electrical systems supporting solar, wind and energy storage applications.',                   img: 'src/assets/winding-floor.jpg',     bg: '#011f0d' },
@@ -5039,11 +5202,35 @@ const HOME_INDUSTRY_CARDS = [
   { id: 'datacenter', name: 'Data Centers',                    desc: 'Power conversion and backup infrastructure for mission-critical facilities.',                   img: 'src/assets/test-bay2.jpg',         bg: '#050d1e' },
 ];
 
-const HOME_CAPABILITIES = [
-  { id: 'magnetics',         name: 'Magnetics',                 desc: 'Transformers, reactors and magnetic components for industrial, utility, railway and renewable installations. Engineered in-house from winding to type testing.' },
-  { id: 'control-panels',    name: 'Control Panel Assemblies',  desc: 'Engineered control and power distribution panels for rolling stock and industrial installations, built and tested to IEC 61439.' },
-  { id: 'power-electronics', name: 'Power Electronics Systems', desc: 'Industrial battery chargers and power conversion systems for fleet, utility and special applications.' },
-  { id: 'cross-segment',     name: 'Cross-Segment Solutions',   desc: 'Components and sub-systems engineered for OEM integration across rolling stock, industrial and power applications.' },
+const HOME_CAP_DETAIL = [
+  {
+    id: 'magnetics', num: '01', name: 'Magnetics',
+    sub: 'Foundation of critical electrical systems',
+    desc: 'Transformers, reactors and magnetic components designed and manufactured in-house. Engineering from specification through winding, assembly and type testing.',
+    tags: ['Distribution & special transformers', 'Dry-type and oil-cooled designs', 'Reactor design & manufacture'],
+    img: 'src/assets/magnetics.jpg',
+  },
+  {
+    id: 'control-panels', num: '02', name: 'Control Panel Assemblies',
+    sub: 'Power distribution and control intelligence',
+    desc: 'Engineered control and power distribution panels for rolling stock and industrial installations. Built and tested to IEC 61439 in a dedicated assembly bay.',
+    tags: ['Rolling stock & industrial panels', 'IEC 61439 qualified', 'Custom switchgear assemblies'],
+    img: 'src/assets/control-panel.jpg',
+  },
+  {
+    id: 'power-electronics', num: '03', name: 'Power Electronics Systems',
+    sub: 'Power conversion, charging and energy management',
+    desc: 'Industrial battery chargers and power conversion systems for fleet, utility and specialist applications. Designed for continuous duty in demanding environments.',
+    tags: ['Industrial battery chargers', 'DC power conversion systems', 'Custom power supplies'],
+    img: 'src/assets/power-electronics.jpg',
+  },
+  {
+    id: 'cross-segment', num: '04', name: 'Integrated Solutions',
+    sub: 'Application-ready systems combining multiple technologies',
+    desc: 'Sub-systems and assemblies engineered for OEM integration, combining magnetics, control and power electronics into customer-specified configurations.',
+    tags: ['OEM sub-system supply', 'Multi-technology integration', 'Application engineering support'],
+    img: 'src/assets/cross-segment.jpg',
+  },
 ];
 
 function useVisibleCount() {
@@ -5133,6 +5320,65 @@ function IndustryCarousel({ navigate }) {
   );
 }
 
+function CapabilityShowcase({ navigate }) {
+  const [active, setActive] = React.useState(0);
+  const [fading, setFading] = React.useState(false);
+  const timerRef = React.useRef(null);
+
+  const switchTo = (i) => {
+    if (i === active || fading) return;
+    setFading(true);
+    timerRef.current = setTimeout(() => {
+      setActive(i);
+      setFading(false);
+    }, 200);
+  };
+
+  React.useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
+
+  const cap = HOME_CAP_DETAIL[active];
+
+  return (
+    <div className="cap-showcase">
+      <div className="cap-tabs" role="tablist" aria-label="Engineering capabilities">
+        {HOME_CAP_DETAIL.map((c, i) => (
+          <button
+            key={c.id}
+            role="tab"
+            aria-selected={i === active}
+            className={'cap-tab' + (i === active ? ' cap-tab--active' : '')}
+            onClick={() => switchTo(i)}
+          >
+            <span className="mono cap-tab-num">{c.num}</span>
+            <span className="cap-tab-name">{c.name}</span>
+          </button>
+        ))}
+      </div>
+      <div className={'cap-panel' + (fading ? ' cap-panel--fade' : '')}>
+        <div className="cap-panel-text">
+          <div className="mono cap-panel-sub">{cap.sub}</div>
+          <h3 className="cap-panel-title">{cap.name}</h3>
+          <p className="cap-panel-desc">{cap.desc}</p>
+          <ul className="cap-panel-tags">
+            {cap.tags.map((t, i) => (
+              <li key={i} className="cap-panel-tag">{t}</li>
+            ))}
+          </ul>
+          <button
+            className="btn btn-ghost cap-panel-cta"
+            onClick={() => navigate('products', cap.id)}
+          >
+            Explore {cap.name} <span className="arrow">→</span>
+          </button>
+        </div>
+        <div className="cap-panel-img" aria-hidden="true">
+          <img src={cap.img} alt={cap.name} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function PageHome({ navigate, tweaks }) {
   useReveal();
 
@@ -5181,7 +5427,7 @@ function PageHome({ navigate, tweaks }) {
       <section className="section reveal">
         <div className="container">
           <div className="section-head">
-            <div className="eyebrow"><span className="dot" /><span className="mono">01 / Industries served</span></div>
+            <div className="eyebrow"><span className="dot" /><span className="mono">Industries Served</span></div>
             <div>
               <h2>Powering Critical Industries</h2>
               <p style={{ marginTop: 16, fontSize: 15, color: 'var(--ink-soft)', maxWidth: '60ch' }}>
@@ -5193,40 +5439,19 @@ function PageHome({ navigate, tweaks }) {
         </div>
       </section>
 
-      {/* SECTION 3 — MANUFACTURING CAPABILITIES */}
+      {/* SECTION 3 — ENGINEERING CAPABILITIES */}
       <section className="section reveal" style={{ background: 'var(--bg-alt)' }}>
         <div className="container">
           <div className="section-head">
-            <div className="eyebrow"><span className="dot" /><span className="mono">02 / Manufacturing capabilities</span></div>
+            <div className="eyebrow"><span className="dot" /><span className="mono">Manufacturing Capabilities</span></div>
             <div>
-              <h2>Integrated Manufacturing Capabilities</h2>
+              <h2>Engineering Capabilities Under One Roof</h2>
               <p style={{ marginTop: 16, fontSize: 15, color: 'var(--ink-soft)', maxWidth: '60ch' }}>
-                From magnetic components and control systems to power electronics and custom-engineered assemblies, Dynalektric delivers end-to-end electrical manufacturing capabilities under one roof.
+                From magnetic components and control systems to power conversion and integrated assemblies, Dynalektric delivers complete electrical solutions for critical industries.
               </p>
             </div>
           </div>
-          <div className="home-cap-grid">
-            {HOME_CAPABILITIES.map((cap) => (
-              <button
-                key={cap.id}
-                className="home-cap-card reveal"
-                onClick={() => navigate('products', cap.id)}
-              >
-                <div className="home-cap-img">
-                  <img src={HOME_PRODUCT_IMAGES[cap.id]} alt={cap.name} />
-                  <div className="home-cap-img-overlay" />
-                </div>
-                <div className="home-cap-body">
-                  <h3>{cap.name}</h3>
-                  <p>{cap.desc}</p>
-                  <div className="home-cap-foot">
-                    <span className="mono">Learn More</span>
-                    <span className="arrow">→</span>
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
+          <CapabilityShowcase navigate={navigate} />
         </div>
       </section>
 
@@ -5235,7 +5460,7 @@ function PageHome({ navigate, tweaks }) {
         <div className="container">
           <div className="rnd-teaser">
             <div className="rnd-teaser-copy">
-              <div className="mono" style={{ color: 'var(--accent)', marginBottom: 24 }}>03 / Innovation Portfolio</div>
+              <div className="mono" style={{ color: 'var(--accent)', marginBottom: 24 }}>Innovation Portfolio</div>
               <h2>Custom requirements engineered in-house.</h2>
               <p className="lead" style={{ marginTop: 24 }}>
                 Our engineering and new product development teams take a customer specification through feasibility, design, prototyping, validation and pilot production. One team, one process.
@@ -5255,19 +5480,117 @@ function PageHome({ navigate, tweaks }) {
         </div>
       </section>
 
-      {/* SECTION 5 — CASE STUDIES */}
-      <section className="section reveal">
+      {/* SECTION 5 — ENGINEERING SOLUTIONS IN ACTION */}
+      <section className="section cred-section reveal">
         <div className="container">
           <div className="section-head">
-            <div className="eyebrow"><span className="dot" /><span className="mono">04 / Application references</span></div>
+            <div className="eyebrow"><span className="dot" /><span className="mono">Engineering applications</span></div>
             <div>
-              <h2>Proven across sectors.</h2>
-              <p style={{ marginTop: 16, fontSize: 15, color: 'var(--ink-soft)' }}>
-                Indicative application references across rail, renewables, utilities, automation, material handling and data centres. Project names are not shown. Detailed references available under NDA on request.
+              <h2>Engineering Solutions In Action</h2>
+              <p style={{ marginTop: 16, fontSize: 15, color: 'var(--ink-soft)', maxWidth: '60ch' }}>
+                Electrical systems engineered for the specific demands of rail, energy, utilities and industrial operations.
               </p>
             </div>
           </div>
-          <CaseStudyGrid limit={6} />
+
+          <div className="cred-grid">
+            <div className="cred-row">
+              <div className="cred-card cred-card--wide">
+                <img src="src/assets/facility-teaser.jpg" alt="" aria-hidden="true" />
+                <div className="cred-overlay" />
+                <div className="cred-body">
+                  <span className="mono cred-tag">Railway &amp; Traction</span>
+                  <h3>Powering Modern Rail Networks</h3>
+                  <p className="cred-desc">Traction transformers, auxiliary converters and onboard control systems supplied to rolling stock OEMs and rail infrastructure projects.</p>
+                  <div className="cred-insights">
+                    <div className="cred-insight">
+                      <span className="cred-insight-k">Challenge</span>
+                      <span className="cred-insight-v">Space-constrained, high-vibration environments requiring compact, robust electrical assemblies.</span>
+                    </div>
+                    <div className="cred-insight">
+                      <span className="cred-insight-k">Solution</span>
+                      <span className="cred-insight-v">Custom-engineered magnetics and control panels built to EN 50155 and IEC 61373 railway standards.</span>
+                    </div>
+                    <div className="cred-insight">
+                      <span className="cred-insight-k">Outcome</span>
+                      <span className="cred-insight-v">Qualified components integrated into fleet programs, subject to OEM acceptance testing.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="cred-card">
+                <img src="src/assets/winding-floor.jpg" alt="" aria-hidden="true" />
+                <div className="cred-overlay" />
+                <div className="cred-body">
+                  <span className="mono cred-tag">Renewable Energy</span>
+                  <h3>Supporting Utility-Scale Renewable Energy</h3>
+                  <p className="cred-desc">Transformers and reactor systems engineered for solar parks, wind farms and grid-tied energy storage installations.</p>
+                  <div className="cred-insights">
+                    <div className="cred-insight">
+                      <span className="cred-insight-k">Challenge</span>
+                      <span className="cred-insight-v">Variable load profiles and outdoor installation requiring high thermal performance.</span>
+                    </div>
+                    <div className="cred-insight">
+                      <span className="cred-insight-k">Solution</span>
+                      <span className="cred-insight-v">Oil-cooled and dry-type transformers designed for cyclic loading, with IP-rated enclosures where applicable.</span>
+                    </div>
+                    <div className="cred-insight">
+                      <span className="cred-insight-k">Outcome</span>
+                      <span className="cred-insight-v">Systems integrated into EPC-led renewable projects, delivering reliable power conversion at the point of generation.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="cred-row">
+              <div className="cred-card">
+                <img src="src/assets/test-bay.jpg" alt="" aria-hidden="true" />
+                <div className="cred-overlay" />
+                <div className="cred-body">
+                  <span className="mono cred-tag">Power &amp; Utilities</span>
+                  <h3>Strengthening Critical Power Infrastructure</h3>
+                  <p className="cred-desc">Distribution transformers and reactor systems supplied to utilities, EPC contractors and substation projects across domestic and export markets.</p>
+                  <div className="cred-insights">
+                    <div className="cred-insight">
+                      <span className="cred-insight-k">Challenge</span>
+                      <span className="cred-insight-v">Long service life requirements with minimal maintenance access in live network environments.</span>
+                    </div>
+                    <div className="cred-insight">
+                      <span className="cred-insight-k">Solution</span>
+                      <span className="cred-insight-v">Type-tested transformers manufactured to IEC 60076, with documented quality plans per project.</span>
+                    </div>
+                    <div className="cred-insight">
+                      <span className="cred-insight-k">Outcome</span>
+                      <span className="cred-insight-v">Products accepted by utility procurement teams and integrated into substation upgrade programs.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="cred-card cred-card--wide">
+                <img src="src/assets/power-electronics.jpg" alt="" aria-hidden="true" />
+                <div className="cred-overlay" />
+                <div className="cred-body">
+                  <span className="mono cred-tag">Material Handling &amp; Automation</span>
+                  <h3>Keeping Industrial Operations Moving</h3>
+                  <p className="cred-desc">Battery chargers, power conversion systems and control panels supporting forklift fleets, AGVs and warehouse automation infrastructure.</p>
+                  <div className="cred-insights">
+                    <div className="cred-insight">
+                      <span className="cred-insight-k">Challenge</span>
+                      <span className="cred-insight-v">Continuous duty cycles requiring reliable power delivery with minimal downtime.</span>
+                    </div>
+                    <div className="cred-insight">
+                      <span className="cred-insight-k">Solution</span>
+                      <span className="cred-insight-v">Industrial battery chargers and distribution panels engineered for 24-hour operation in warehouse environments.</span>
+                    </div>
+                    <div className="cred-insight">
+                      <span className="cred-insight-k">Outcome</span>
+                      <span className="cred-insight-v">Deployed across logistics and warehousing operations, supporting fleet uptime for materials handling customers.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
