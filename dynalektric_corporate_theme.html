@@ -1309,7 +1309,19 @@ image-slot {
 .contact-info-block .value { font-size: 16px; color: var(--ink); }
 .contact-map {
   margin-top: 32px;
-  height: 240px;
+  height: 420px;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.contact-map iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
 }
 .success-state {
   background: var(--bg-card);
@@ -2673,6 +2685,17 @@ img, video, svg, image-slot { max-width: 100%; }
 }
 .corp-hero-btn .arrow { transition: transform 200ms; }
 .corp-hero-btn:hover .arrow { transform: translateX(4px); }
+.corp-hero--inner { min-height: 62vh; }
+.corp-hero-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+.corp-hero--inner .corp-hero-copy p { margin-bottom: 0; }
+@media (max-width: 768px) { .corp-hero--inner { min-height: 50vh; } }
 .corp-hero-bar {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -5630,13 +5653,17 @@ function PageAbout({ navigate }) {
 
   return (
     <main className="page-enter">
-      <section className="page-hero">
-        <div className="container">
-          <div className="mono">02 / About Dynalektric</div>
-          <h1>Engineering-led electrical and electronics manufacturing.</h1>
-          <p className="lead">
-            Dynalektric designs and manufactures custom magnetics, transformers, control panels and power electronics for OEMs, EPC contractors and utilities. We engineer to specification, test in-house and document everything we ship.
-          </p>
+      <section className="corp-hero">
+        <div className="corp-hero-media">
+          <img src="src/assets/winding-floor.jpg" alt="" aria-hidden="true" />
+        </div>
+        <div className="corp-hero-overlay" />
+        <div className="container corp-hero-inner">
+          <div className="corp-hero-copy">
+            <div className="mono corp-hero-label">About Dynalektric</div>
+            <h1>Engineering Excellence Since 1980</h1>
+            <p style={{ marginBottom: 0 }}>Designing, manufacturing and testing electrical systems for transportation, energy and industrial infrastructure.</p>
+          </div>
         </div>
       </section>
 
@@ -5878,13 +5905,17 @@ function PageProducts({ navigate, focusId }) {
   return (
     <main className="page-enter">
       {/* HERO — single H1 */}
-      <section className="page-hero">
-        <div className="container">
-          <div className="mono">02 / Products and Solutions</div>
-          <h1>Electrical and electronics products for industrial applications.</h1>
-          <p className="lead">
-            Transformers, reactors, control panel assemblies, MHE battery chargers, power electronics systems, busbars, cable harnessing, UPS and current sensors, engineered for railway, renewable, utility, heavy industry, material handling and data centre applications. Select a product group and a sub-category to see details.
-          </p>
+      <section className="corp-hero">
+        <div className="corp-hero-media">
+          <img src="src/assets/magnetics.jpg" alt="" aria-hidden="true" />
+        </div>
+        <div className="corp-hero-overlay" />
+        <div className="container corp-hero-inner">
+          <div className="corp-hero-copy">
+            <div className="mono corp-hero-label">Products &amp; Solutions</div>
+            <h1>Electrical Systems Designed For Critical Applications</h1>
+            <p style={{ marginBottom: 0 }}>Magnetics, control panel assemblies, power electronics systems and integrated solutions engineered for demanding operating environments.</p>
+          </div>
         </div>
       </section>
 
@@ -6360,21 +6391,19 @@ function PageRnd({ navigate }) {
   useReveal();
   return (
     <main className="page-enter">
-      <section className="container">
-        <div className="rnd-hero reveal">
-          <div>
-            <div className="mono" style={{ color: 'var(--accent)', marginBottom: 16, fontWeight: 600 }}>04 / Innovation Portfolio</div>
-            <h1>Innovation Portfolio for custom power solutions.</h1>
-          </div>
-          <div>
-            <p className="lead">
-              Dynalektric is an engineering-led manufacturer. Our R&amp;D portfolio covers traction, renewables, connected systems and integrated power modules. Each focus area carries products in active development, validation and series production.
-            </p>
+      <section className="corp-hero">
+        <div className="corp-hero-media">
+          <img src="src/assets/rnd-bench.jpg" alt="" aria-hidden="true" />
+        </div>
+        <div className="corp-hero-overlay" />
+        <div className="container corp-hero-inner">
+          <div className="corp-hero-copy">
+            <div className="mono corp-hero-label">Innovation Portfolio</div>
+            <h1>Advancing Engineering Through Innovation</h1>
+            <p style={{ marginBottom: 0 }}>Continuous product development, design validation and engineering expertise driving the next generation of electrical systems.</p>
           </div>
         </div>
       </section>
-
-      <hr className="rule-soft container" style={{ margin: '0 auto', maxWidth: 'calc(var(--container-max) - 64px)' }} />
 
       <section className="section reveal">
         <div className="container">
@@ -7642,9 +7671,18 @@ function PageContact({ navigate }) {
                 One business day for complete specifications. Larger scopes may take longer, subject to engineering review.
               </div>
             </div>
-            <div className="contact-map placeholder-stripe">
-              <span>Map placeholder</span>
-            </div>
+            <div className="contact-map">
+             <iframe
+               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3891.160864912495!2d77.6294568735852!3d12.768063119311018!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae69fde1bc74cd%3A0x9dbf3aaa6f14c1c7!2sDynalektric%20Equipment%20Private%20Limited!5e0!3m2!1sen!2sin!4v1780899634933!5m2!1sen!2sin"
+               width="100%"
+               height="100%"
+               style={{ border: 0 }}
+               allowFullScreen
+               loading="lazy"
+               referrerPolicy="no-referrer-when-downgrade"
+               title="Dynalektric Location"
+             />
+           </div>
           </aside>
         </div>
       </section>

@@ -54,13 +54,17 @@ function PageProducts({ navigate, focusId }) {
   return (
     <main className="page-enter">
       {/* HERO — single H1 */}
-      <section className="page-hero">
-        <div className="container">
-          <div className="mono">02 / Products and Solutions</div>
-          <h1>Electrical and electronics products for industrial applications.</h1>
-          <p className="lead">
-            Transformers, reactors, control panel assemblies, MHE battery chargers, power electronics systems, busbars, cable harnessing, UPS and current sensors, engineered for railway, renewable, utility, heavy industry, material handling and data centre applications. Select a product group and a sub-category to see details.
-          </p>
+      <section className="corp-hero">
+        <div className="corp-hero-media">
+          <img src="src/assets/magnetics.jpg" alt="" aria-hidden="true" />
+        </div>
+        <div className="corp-hero-overlay" />
+        <div className="container corp-hero-inner">
+          <div className="corp-hero-copy">
+            <div className="mono corp-hero-label">Products &amp; Solutions</div>
+            <h1>Electrical Systems Designed For Critical Applications</h1>
+            <p style={{ marginBottom: 0 }}>Magnetics, control panel assemblies, power electronics systems and integrated solutions engineered for demanding operating environments.</p>
+          </div>
         </div>
       </section>
 

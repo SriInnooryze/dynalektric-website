@@ -5,13 +5,17 @@ function PageAbout({ navigate }) {
 
   return (
     <main className="page-enter">
-      <section className="page-hero">
-        <div className="container">
-          <div className="mono">02 / About Dynalektric</div>
-          <h1>Engineering-led electrical and electronics manufacturing.</h1>
-          <p className="lead">
-            Dynalektric designs and manufactures custom magnetics, transformers, control panels and power electronics for OEMs, EPC contractors and utilities. We engineer to specification, test in-house and document everything we ship.
-          </p>
+      <section className="corp-hero">
+        <div className="corp-hero-media">
+          <img src="src/assets/winding-floor.jpg" alt="" aria-hidden="true" />
+        </div>
+        <div className="corp-hero-overlay" />
+        <div className="container corp-hero-inner">
+          <div className="corp-hero-copy">
+            <div className="mono corp-hero-label">About Dynalektric</div>
+            <h1>Engineering Excellence Since 1980</h1>
+            <p style={{ marginBottom: 0 }}>Designing, manufacturing and testing electrical systems for transportation, energy and industrial infrastructure.</p>
+          </div>
         </div>
       </section>
 

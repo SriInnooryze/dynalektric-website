@@ -3264,6 +3264,17 @@ img, video, svg, image-slot { max-width: 100%; }
 }
 .corp-hero-btn .arrow { transition: transform 200ms; }
 .corp-hero-btn:hover .arrow { transform: translateX(4px); }
+.corp-hero--inner { min-height: 62vh; }
+.corp-hero-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+.corp-hero--inner .corp-hero-copy p { margin-bottom: 0; }
+@media (max-width: 768px) { .corp-hero--inner { min-height: 50vh; } }
 .corp-hero-bar {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

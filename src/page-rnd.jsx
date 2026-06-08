@@ -39,21 +39,19 @@ function PageRnd({ navigate }) {
   useReveal();
   return (
     <main className="page-enter">
-      <section className="container">
-        <div className="rnd-hero reveal">
-          <div>
-            <div className="mono" style={{ color: 'var(--accent)', marginBottom: 16, fontWeight: 600 }}>04 / Innovation Portfolio</div>
-            <h1>Innovation Portfolio for custom power solutions.</h1>
-          </div>
-          <div>
-            <p className="lead">
-              Dynalektric is an engineering-led manufacturer. Our R&amp;D portfolio covers traction, renewables, connected systems and integrated power modules. Each focus area carries products in active development, validation and series production.
-            </p>
+      <section className="corp-hero">
+        <div className="corp-hero-media">
+          <img src="src/assets/rnd-bench.jpg" alt="" aria-hidden="true" />
+        </div>
+        <div className="corp-hero-overlay" />
+        <div className="container corp-hero-inner">
+          <div className="corp-hero-copy">
+            <div className="mono corp-hero-label">Innovation Portfolio</div>
+            <h1>Advancing Engineering Through Innovation</h1>
+            <p style={{ marginBottom: 0 }}>Continuous product development, design validation and engineering expertise driving the next generation of electrical systems.</p>
           </div>
         </div>
       </section>
-
-      <hr className="rule-soft container" style={{ margin: '0 auto', maxWidth: 'calc(var(--container-max) - 64px)' }} />
 
       <section className="section reveal">
         <div className="container">
